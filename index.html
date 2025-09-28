@@ -299,8 +299,8 @@
         // QUAN TRỌNG: Lấy Client ID và Client Secret từ trang Spotify Developer Dashboard
         // (https://developer.spotify.com/dashboard/) và dán vào đây.
         // =========================================================================
-        const SPOTIFY_CLIENT_ID = ''; // <-- DÁN CLIENT ID CỦA BẠN VÀO ĐÂY
-        const SPOTIFY_CLIENT_SECRET = ''; // <-- DÁN CLIENT SECRET CỦA BẠN VÀO ĐÂY
+        const SPOTIFY_CLIENT_ID = 'abc36f3ee82d43a2adaa404799dc88ab'; // <-- DÁN CLIENT ID CỦA BẠN VÀO ĐÂY
+        const SPOTIFY_CLIENT_SECRET = 'cd345d9fa71f4a7ba70b3a3f6934e558'; // <-- DÁN CLIENT SECRET CỦA BẠN VÀO ĐÂY
         
         // --- Danh sách các bài hát (Sử dụng ID của bài hát từ Spotify) ---
         // Bạn có thể tìm ID bằng cách: vào Spotify -> chọn bài hát -> dấu "..." -> Share -> Copy Spotify URI
@@ -309,7 +309,7 @@
             '4iZ4c4pD2zT0gK2c9t0yG3', // Cứ Chill Thôi - Chillies, Suni Hạ Linh, Rhymastic
             '5gS2sd2wXg5FhRkSAbk4m6', // Đi Về Nhà - Đen, JustaTee
             '0a2pwzR0c2p8aD4g2q3jE5', // Gieo Quẻ - Hoàng Thùy Linh, ĐEN
-            '1LxADaek0V6G50W1mUaG2F', // Nấu Ăn Cho Em - Đen, PiaLinh
+            '1LxADaekV6G50W1mUaG2F', // Nấu Ăn Cho Em - Đen, PiaLinh
             '45x5y5Y2y5n2e2w7k2p832', // See Tình - Hoàng Thùy Linh
             '1Iyo2a3JDEW1s8hAn2h0Xv', // Waiting For You - MONO
             '6dO5q15s47ki28f2g5d29M' // Có Chắc Yêu Là Đây - Sơn Tùng M-TP
@@ -415,7 +415,8 @@
                 });
                 
                 if (!response.ok) {
-                    throw new Error(`Lỗi xác thực Spotify: ${response.statusText}`);
+                    // Thêm response.status để log lỗi rõ ràng hơn
+                    throw new Error(`Lỗi xác thực Spotify: ${response.status} ${response.statusText}`);
                 }
 
                 const data = await response.json();
@@ -438,14 +439,16 @@
             }
 
             try {
-                const response = await fetch(`https://api.spotify.com/v1/tracks/${trackId}`, {
+                // Thêm tham số 'market=VN' để đảm bảo bài hát có sẵn ở thị trường Việt Nam
+                const response = await fetch(`https://api.spotify.com/v1/tracks/${trackId}?market=VN`, {
                     headers: {
                         'Authorization': `Bearer ${accessToken}`
                     }
                 });
 
                 if (!response.ok) {
-                    throw new Error(`Không tìm thấy bài hát: ${response.statusText}`);
+                    // Thêm response.status để log lỗi rõ ràng hơn
+                    throw new Error(`Không tìm thấy bài hát: ${response.status} ${response.statusText}`);
                 }
 
                 return await response.json();
@@ -665,3 +668,4 @@
     </script>
 </body>
 </html>
+
